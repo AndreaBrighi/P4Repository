@@ -91,6 +91,12 @@ struct headers {
     myTunnel_t   myTunnel;
 }
 
+struct packet_data{
+    bit<16> src_id;
+    bit<16> dst_id;
+    bit<48> timestamp;
+}
+
 /*************************************************************************
 *********************** P A R S E R  ***********************************
 *************************************************************************/
@@ -150,6 +156,7 @@ control MyIngress(inout headers hdr,
     direct_counter(CounterType.packets) c;
     register<bit<48>>(1024) last_seen;
     register<bit<64>>(1024) flows;
+    register<packet_data>(1) TRESHOLDI;
 
     action get_inter_packet_gap(out bit<48> interval,bit<32> flow_id)
     {
@@ -185,6 +192,10 @@ control MyIngress(inout headers hdr,
         hdr.ethernet.srcAddr = hdr.ethernet.dstAddr;
         hdr.ethernet.dstAddr = dstAddr;
         hdr.ipv4.ttl = hdr.ipv4.ttl - 1;
+    }
+
+    action save_last_seen(packet_data pkt_data, ) {
+        TRESHOLDI.write(packet_data,0);
     }
     
     table ipv4_lpm {
@@ -232,12 +243,13 @@ control MyIngress(inout headers hdr,
             last_seen.read(last_pkt_cnt,flow);
             last_seen.read(last_pkt_cnt_opp,flow_opp);
             tmp = last_pkt_cnt - last_pkt_cnt_opp + 1;
-            if(tmp < TRESHOLD) {
-
-              get_inter_packet_gap(last_pkt_cnt,flow);
-            }
-            else{
-              drop();
+            get_inter_packet_gap(last_pkt_cnt,flow);
+            if(tmp == TRESHOLD) {
+                packet_data pkt_data;
+                pkt_data.src_id = hdr.ipv4.srcAddr;
+                pkt_data.dst_id = hdr.ipv4.dstAddr;
+                pkt_data.timestamp = last_pkt_cnt;
+                save_last_seen(packet_data);
             }
         }
         if (hdr.myTunnel.isValid()) {
