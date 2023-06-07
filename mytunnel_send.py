@@ -43,7 +43,7 @@ def main():
         pkt =  Ether(src=get_if_hwaddr(iface), dst='ff:ff:ff:ff:ff:ff')
         pkt = pkt / IP(dst=addr) / TCP(dport=1234, sport=random.randint(49152,65535)) / args.message
 
-    pkt.show()
+    pkt.show2()
 #    hexdump(pkt)
 #    print "len(pkt) = ", len(pkt)
     sendp(pkt, iface=iface, verbose=False)
