@@ -156,7 +156,7 @@ control MyIngress(inout headers hdr,
     direct_counter(CounterType.packets) c;
     register<bit<48>>(1024) last_seen;
     register<bit<64>>(1024) flows;
-    register<bit<112>>(1) TRESHOLDI = 0;
+    register<bit<112>>(1) TRESHOLDI;
 
     action get_inter_packet_gap(out bit<48> interval,bit<32> flow_id)
     {
