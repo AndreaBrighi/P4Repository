@@ -8,11 +8,11 @@ TYPE_IPV4 = 0x0800
 class MyTunnel(Packet):
     name = "MyTunnel"
     fields_desc = [
-        BitField("pid", 0x0, size=16),
-        BitField("dst_id", 0x0, size=16),
-        BitField("IP_MAL", 0x0, size=32),
-        BitField("TIME", 0x0, size=48),
-        BitField("FLAG", 0x0, size = 1)
+        BitField("pid", 0, 16),
+        BitField("dst_id", 0, 16),
+        BitField("IP_MAL", 0, 32),
+        BitField("TIME", 0, 48),
+        BitField("FLAG", 0, 8)
     ]
     def mysummary(self):
         return self.sprintf("pid=%pid%, dst_id=%dst_id%")

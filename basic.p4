@@ -77,7 +77,7 @@ header myTunnel_t {
     bit<16> dst_id;
     bit<32> IP_MAL;
     bit<48> TIME;
-    bit<1> FLAG;
+    bit<8> FLAG;
 }
 
 struct metadata {
@@ -219,8 +219,7 @@ control MyIngress(inout headers hdr,
         if(pkt_data != 0){
             hdr.myTunnel.IP_MAL = pkt_data[63:32];
             hdr.myTunnel.FLAG = 1;
-        }
-        
+        } 
     }
 
     table myTunnel_exact {
