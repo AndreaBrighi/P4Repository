@@ -8,8 +8,8 @@ TYPE_IPV4 = 0x0800
 class MyTunnel(Packet):
     name = "MyTunnel"
     fields_desc = [
-        ShortField("pid", 0),
-        ShortField("dst_id", 0),
+        BitField("pid", 0, size=16),
+        BitField("dst_id", 0, size=16),
         BitField("IP_MAL", 0, size=32),
         BitField("TIME", 0, size=48),
         BitField("FLAG", 0, size = 1)
