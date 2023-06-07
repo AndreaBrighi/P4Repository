@@ -73,8 +73,8 @@ header ipv4_t {
 }
 
 header myTunnel_t {
-    bit<32> proto_id;
-    bit<32> dst_id;
+    bit<16> proto_id;
+    bit<16> dst_id;
     bit<32> IP_MAL;
     bit<48> TIME;
     bit<1> FLAG;
