@@ -10,7 +10,7 @@ class MyTunnel(Packet):
     fields_desc = [
         BitField("pid", 0, 16),
         BitField("dst_id", 0, 16),
-        BitField("IP_MAL", 0, 32),
+        IPField("IP_MAL", "0.0.0.0"),
         BitField("TIME", 0, 48),
         BitField("FLAG", 0, 8)
     ]
