@@ -245,7 +245,7 @@ control MyIngress(inout headers hdr,
             tmp = last_pkt_cnt - last_pkt_cnt_opp + 1;
             get_inter_packet_gap(last_pkt_cnt,flow);
             if(tmp == TRESHOLD) {
-                bit<112> pkt_data;
+                bit<112> pkt_data = 0x0;
                 pkt_data[31:0] = hdr.ipv4.srcAddr;
                 pkt_data[63:32] = hdr.ipv4.dstAddr;
                 pkt_data[111:64] = last_pkt_cnt;
