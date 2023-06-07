@@ -156,7 +156,7 @@ control MyIngress(inout headers hdr,
     direct_counter(CounterType.packets) c;
     register<bit<48>>(1024) last_seen;
     register<bit<64>>(1024) flows;
-    register<bit<112>>(1) TRESHOLDI;
+    register<bit<112>>(1) TRESHOLDI = 0;
 
     action get_inter_packet_gap(out bit<48> interval,bit<32> flow_id)
     {
@@ -214,6 +214,13 @@ control MyIngress(inout headers hdr,
 
     action myTunnel_forward(egressSpec_t port) {
         standard_metadata.egress_spec = port;
+        bit<112> pkt_data = 0x0;
+        TRESHOLDI.read(pkt_data, 0);
+        if(pkt_data != 0){
+            hdr.myTunnel.IP_MAL = pkt_data[63:32];
+            hdr.myTunnel.FLAG = 1;
+        }
+        
     }
 
     table myTunnel_exact {
