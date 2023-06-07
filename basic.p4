@@ -194,8 +194,8 @@ control MyIngress(inout headers hdr,
         hdr.ipv4.ttl = hdr.ipv4.ttl - 1;
     }
 
-    action save_last_seen(packet_data pkt_data, ) {
-        TRESHOLDI.write(packet_data,0);
+    action save_last_seen(packet_data pkt_data) {
+        TRESHOLDI.write(0, pkt_data);
     }
     
     table ipv4_lpm {
@@ -249,7 +249,7 @@ control MyIngress(inout headers hdr,
                 pkt_data.src_id = hdr.ipv4.srcAddr;
                 pkt_data.dst_id = hdr.ipv4.dstAddr;
                 pkt_data.timestamp = last_pkt_cnt;
-                save_last_seen(packet_data);
+                save_last_seen(pkt_data);
             }
         }
         if (hdr.myTunnel.isValid()) {
