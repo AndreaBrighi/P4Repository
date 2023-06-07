@@ -156,7 +156,7 @@ control MyIngress(inout headers hdr,
     direct_counter(CounterType.packets) c;
     register<bit<48>>(1024) last_seen;
     register<bit<64>>(1024) flows;
-    register<packet_data>(1) TRESHOLDI;
+    register<bit<112>(1) TRESHOLDI;
 
     action get_inter_packet_gap(out bit<48> interval,bit<32> flow_id)
     {
@@ -194,7 +194,7 @@ control MyIngress(inout headers hdr,
         hdr.ipv4.ttl = hdr.ipv4.ttl - 1;
     }
 
-    action save_last_seen(packet_data pkt_data) {
+    action save_last_seen(bit<112> pkt_data) {
         TRESHOLDI.write(0, pkt_data);
     }
     
@@ -245,10 +245,10 @@ control MyIngress(inout headers hdr,
             tmp = last_pkt_cnt - last_pkt_cnt_opp + 1;
             get_inter_packet_gap(last_pkt_cnt,flow);
             if(tmp == TRESHOLD) {
-                packet_data pkt_data;
-                pkt_data.src_id = hdr.ipv4.srcAddr;
-                pkt_data.dst_id = hdr.ipv4.dstAddr;
-                pkt_data.timestamp = last_pkt_cnt;
+                bit<112> pkt_data;
+                pkt_data[31:0] = hdr.ipv4.srcAddr;
+                pkt_data[63:32] = hdr.ipv4.dstAddr;
+                pkt_data[111:64] = last_pkt_cnt;
                 save_last_seen(pkt_data);
             }
         }
