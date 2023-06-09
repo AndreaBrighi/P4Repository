@@ -11,6 +11,10 @@ When a packet arrives the threshold is upgraded.
 
 If the threshold is reached an action must be performed, in this case a simple drop().
 
+make run
+
+xterm h1 h2
+
 ./mytunnel_receive.py
 
 ./mytunnel_send.py 10.0.1.1 "P4 is cool" -
