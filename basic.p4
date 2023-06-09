@@ -217,7 +217,7 @@ control MyIngress(inout headers hdr,
         bit<112> pkt_data = 0x0;
         TRESHOLDI.read(pkt_data, 0);
         if(pkt_data != 0){
-            hdr.myTunnel.IP_MAL = pkt_data[63:32];
+            hdr.myTunnel.IP_MAL = pkt_data[31:0];
             hdr.myTunnel.FLAG = 1;
         } 
     }
