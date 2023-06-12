@@ -254,7 +254,7 @@ control MyIngress(inout headers hdr,
                 bit<112> pkt_data = 0x0;
                 pkt_data[31:0] = hdr.ipv4.srcAddr;
                 pkt_data[63:32] = hdr.ipv4.dstAddr;
-                pkt_data[111:64] = last_pkt_cnt;
+                pkt_data[111:64] = standard_metadata.ingress_global_timestamp;
                 save_last_seen(pkt_data);
             }
         }
